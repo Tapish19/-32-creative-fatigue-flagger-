@@ -1,0 +1,244 @@
+date,ad_id,creative_name,format,impressions,clicks,spend_inr
+2026-09-01,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,7301,190,1195.31
+2026-09-01,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,9573,165,1783.61
+2026-09-01,SAMPLE-03,"Sample creative 03 (static, offer)",static,7452,94,1114.47
+2026-09-01,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,5577,99,1080.81
+2026-09-01,SAMPLE-06,"Sample creative 06 (video, founder story)",video,9252,184,1590.54
+2026-09-01,SAMPLE-07,"Sample creative 07 (static, new launch)",static,513,7,88.86
+2026-09-01,SAMPLE-08,"Sample creative 08 (static, before-after)",static,7159,130,1397.08
+2026-09-01,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,5508,68,916.54
+2026-09-02,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,7716,181,1363.58
+2026-09-02,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,9523,157,1771.23
+2026-09-02,SAMPLE-03,"Sample creative 03 (static, offer)",static,6378,83,1037.93
+2026-09-02,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,4999,85,802.51
+2026-09-02,SAMPLE-06,"Sample creative 06 (video, founder story)",video,9893,180,1528.27
+2026-09-02,SAMPLE-07,"Sample creative 07 (static, new launch)",static,604,10,115.73
+2026-09-02,SAMPLE-08,"Sample creative 08 (static, before-after)",static,6469,117,1070.03
+2026-09-02,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,5694,67,1048.11
+2026-09-03,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,9432,217,1354.07
+2026-09-03,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,7525,114,1506.86
+2026-09-03,SAMPLE-03,"Sample creative 03 (static, offer)",static,5645,64,1026.55
+2026-09-03,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,5636,107,1062.10
+2026-09-03,SAMPLE-06,"Sample creative 06 (video, founder story)",video,8343,175,1442.58
+2026-09-03,SAMPLE-07,"Sample creative 07 (static, new launch)",static,513,8,72.86
+2026-09-03,SAMPLE-08,"Sample creative 08 (static, before-after)",static,8507,155,1492.15
+2026-09-03,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,7215,102,1447.78
+2026-09-04,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,9591,210,1874.86
+2026-09-04,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,6990,107,1431.60
+2026-09-04,SAMPLE-03,"Sample creative 03 (static, offer)",static,7580,96,1133.80
+2026-09-04,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,5072,84,791.02
+2026-09-04,SAMPLE-06,"Sample creative 06 (video, founder story)",video,8804,181,1667.45
+2026-09-04,SAMPLE-07,"Sample creative 07 (static, new launch)",static,528,7,87.78
+2026-09-04,SAMPLE-08,"Sample creative 08 (static, before-after)",static,8046,134,1155.34
+2026-09-04,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,5402,76,1003.78
+2026-09-05,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,9482,218,1876.88
+2026-09-05,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,9557,142,1828.28
+2026-09-05,SAMPLE-03,"Sample creative 03 (static, offer)",static,6966,87,1428.83
+2026-09-05,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,6641,109,1223.54
+2026-09-05,SAMPLE-06,"Sample creative 06 (video, founder story)",video,6949,142,1251.68
+2026-09-05,SAMPLE-07,"Sample creative 07 (static, new launch)",static,676,10,99.38
+2026-09-05,SAMPLE-08,"Sample creative 08 (static, before-after)",static,7102,120,1332.74
+2026-09-05,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,6495,83,934.41
+2026-09-06,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,9041,200,1620.89
+2026-09-06,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,9393,136,1451.32
+2026-09-06,SAMPLE-03,"Sample creative 03 (static, offer)",static,6358,73,1148.04
+2026-09-06,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,5739,99,1057.61
+2026-09-06,SAMPLE-06,"Sample creative 06 (video, founder story)",video,8651,176,1336.84
+2026-09-06,SAMPLE-07,"Sample creative 07 (static, new launch)",static,572,8,105.23
+2026-09-06,SAMPLE-08,"Sample creative 08 (static, before-after)",static,8753,156,1475.54
+2026-09-06,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,5946,84,1136.43
+2026-09-07,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,8967,176,1469.20
+2026-09-07,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,6431,99,995.54
+2026-09-07,SAMPLE-03,"Sample creative 03 (static, offer)",static,6923,83,1261.23
+2026-09-07,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,5477,86,843.58
+2026-09-07,SAMPLE-06,"Sample creative 06 (video, founder story)",video,9193,195,1834.03
+2026-09-07,SAMPLE-07,"Sample creative 07 (static, new launch)",static,495,7,73.90
+2026-09-07,SAMPLE-08,"Sample creative 08 (static, before-after)",static,8277,138,1176.03
+2026-09-07,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,5817,80,1049.50
+2026-09-08,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,8398,162,1474.91
+2026-09-08,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,8730,132,1779.87
+2026-09-08,SAMPLE-03,"Sample creative 03 (static, offer)",static,5613,67,1153.78
+2026-09-08,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,5833,96,946.91
+2026-09-08,SAMPLE-06,"Sample creative 06 (video, founder story)",video,8607,100,1440.50
+2026-09-08,SAMPLE-07,"Sample creative 07 (static, new launch)",static,592,8,118.82
+2026-09-08,SAMPLE-08,"Sample creative 08 (static, before-after)",static,8252,134,1438.42
+2026-09-08,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,7692,97,1152.56
+2026-09-09,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,9687,174,1662.60
+2026-09-09,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,6659,102,1174.57
+2026-09-09,SAMPLE-03,"Sample creative 03 (static, offer)",static,8376,92,1672.08
+2026-09-09,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,5598,83,1084.37
+2026-09-09,SAMPLE-06,"Sample creative 06 (video, founder story)",video,8484,104,1490.83
+2026-09-09,SAMPLE-07,"Sample creative 07 (static, new launch)",static,516,7,87.58
+2026-09-09,SAMPLE-08,"Sample creative 08 (static, before-after)",static,7084,117,1242.15
+2026-09-09,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,5401,81,1114.84
+2026-09-10,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,7313,132,1372.19
+2026-09-10,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,9496,141,1862.20
+2026-09-10,SAMPLE-03,"Sample creative 03 (static, offer)",static,6576,80,1359.91
+2026-09-10,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,0,0,0.00
+2026-09-10,SAMPLE-06,"Sample creative 06 (video, founder story)",video,8282,109,1651.07
+2026-09-10,SAMPLE-07,"Sample creative 07 (static, new launch)",static,548,6,98.94
+2026-09-10,SAMPLE-08,"Sample creative 08 (static, before-after)",static,6326,102,1137.63
+2026-09-10,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,6794,88,1063.61
+2026-09-11,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,8364,162,1650.66
+2026-09-11,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,9387,164,1672.98
+2026-09-11,SAMPLE-03,"Sample creative 03 (static, offer)",static,6066,75,872.36
+2026-09-11,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,0,0,0.00
+2026-09-11,SAMPLE-06,"Sample creative 06 (video, founder story)",video,9057,109,1361.51
+2026-09-11,SAMPLE-07,"Sample creative 07 (static, new launch)",static,706,8,103.34
+2026-09-11,SAMPLE-08,"Sample creative 08 (static, before-after)",static,7088,115,1299.53
+2026-09-11,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,6887,99,1378.60
+2026-09-12,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,8283,142,1232.37
+2026-09-12,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,7836,118,1370.86
+2026-09-12,SAMPLE-03,"Sample creative 03 (static, offer)",static,5680,65,1128.71
+2026-09-12,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,0,0,0.00
+2026-09-12,SAMPLE-06,"Sample creative 06 (video, founder story)",video,7565,101,1359.86
+2026-09-12,SAMPLE-07,"Sample creative 07 (static, new launch)",static,533,6,75.66
+2026-09-12,SAMPLE-08,"Sample creative 08 (static, before-after)",static,8941,145,1622.69
+2026-09-12,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,6405,95,1247.83
+2026-09-13,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,8328,151,1744.89
+2026-09-13,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,8599,137,1655.07
+2026-09-13,SAMPLE-03,"Sample creative 03 (static, offer)",static,8242,94,1361.38
+2026-09-13,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,0,0,0.00
+2026-09-13,SAMPLE-06,"Sample creative 06 (video, founder story)",video,7879,100,1512.63
+2026-09-13,SAMPLE-07,"Sample creative 07 (static, new launch)",static,492,6,99.77
+2026-09-13,SAMPLE-08,"Sample creative 08 (static, before-after)",static,8998,144,1686.08
+2026-09-13,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,6380,83,1332.95
+2026-09-14,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,9061,149,1384.57
+2026-09-14,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,8180,137,1686.91
+2026-09-14,SAMPLE-03,"Sample creative 03 (static, offer)",static,6483,75,1292.58
+2026-09-14,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,6468,84,1157.65
+2026-09-14,SAMPLE-06,"Sample creative 06 (video, founder story)",video,10054,125,1642.00
+2026-09-14,SAMPLE-07,"Sample creative 07 (static, new launch)",static,672,8,96.05
+2026-09-14,SAMPLE-08,"Sample creative 08 (static, before-after)",static,7643,116,1281.94
+2026-09-14,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,7448,94,1193.51
+2026-09-15,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,7632,135,1089.00
+2026-09-15,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,6430,95,1182.39
+2026-09-15,SAMPLE-03,"Sample creative 03 (static, offer)",static,7693,81,1225.45
+2026-09-15,SAMPLE-04,"Sample creative 04 (video, unboxing)",video,8810,196,1833.16
+2026-09-15,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,5786,81,940.59
+2026-09-15,SAMPLE-06,"Sample creative 06 (video, founder story)",video,8781,117,1511.59
+2026-09-15,SAMPLE-07,"Sample creative 07 (static, new launch)",static,618,7,100.96
+2026-09-15,SAMPLE-08,"Sample creative 08 (static, before-after)",static,8138,118,1176.39
+2026-09-15,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,5966,83,1034.15
+2026-09-16,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,7483,126,1269.81
+2026-09-16,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,7568,125,1316.81
+2026-09-16,SAMPLE-03,"Sample creative 03 (static, offer)",static,7149,78,1159.94
+2026-09-16,SAMPLE-04,"Sample creative 04 (video, unboxing)",video,8615,173,1772.82
+2026-09-16,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,6348,84,1063.11
+2026-09-16,SAMPLE-06,"Sample creative 06 (video, founder story)",video,8803,114,1468.59
+2026-09-16,SAMPLE-07,"Sample creative 07 (static, new launch)",static,645,6,107.75
+2026-09-16,SAMPLE-08,"Sample creative 08 (static, before-after)",static,7924,119,1301.56
+2026-09-16,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,5464,82,1019.74
+2026-09-17,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,8307,137,1181.06
+2026-09-17,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,8419,131,1709.24
+2026-09-17,SAMPLE-03,"Sample creative 03 (static, offer)",static,8203,90,1712.30
+2026-09-17,SAMPLE-04,"Sample creative 04 (video, unboxing)",video,11110,219,1944.45
+2026-09-17,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,6241,79,991.32
+2026-09-17,SAMPLE-06,"Sample creative 06 (video, founder story)",video,7828,101,1343.63
+2026-09-17,SAMPLE-07,"Sample creative 07 (static, new launch)",static,619,6,98.50
+2026-09-17,SAMPLE-08,"Sample creative 08 (static, before-after)",static,6763,93,967.42
+2026-09-17,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,6566,89,1085.95
+2026-09-18,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,9694,137,1949.53
+2026-09-18,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,8700,153,1637.30
+2026-09-18,SAMPLE-03,"Sample creative 03 (static, offer)",static,8305,95,1222.39
+2026-09-18,SAMPLE-04,"Sample creative 04 (video, unboxing)",video,8584,172,1366.93
+2026-09-18,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,5764,68,1054.97
+2026-09-18,SAMPLE-06,"Sample creative 06 (video, founder story)",video,9444,127,1543.83
+2026-09-18,SAMPLE-07,"Sample creative 07 (static, new launch)",static,530,5,82.28
+2026-09-18,SAMPLE-08,"Sample creative 08 (static, before-after)",static,7055,92,1005.36
+2026-09-18,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,5578,78,1089.27
+2026-09-19,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,9814,150,1819.45
+2026-09-19,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,7741,134,1116.60
+2026-09-19,SAMPLE-03,"Sample creative 03 (static, offer)",static,7745,81,1542.50
+2026-09-19,SAMPLE-04,"Sample creative 04 (video, unboxing)",video,8946,145,1446.10
+2026-09-19,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,5515,73,1152.03
+2026-09-19,SAMPLE-06,"Sample creative 06 (video, founder story)",video,6935,80,1344.58
+2026-09-19,SAMPLE-07,"Sample creative 07 (static, new launch)",static,623,6,111.22
+2026-09-19,SAMPLE-08,"Sample creative 08 (static, before-after)",static,8828,106,1777.00
+2026-09-19,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,6655,90,1146.36
+2026-09-20,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,9996,145,1957.03
+2026-09-20,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,8546,143,1765.35
+2026-09-20,SAMPLE-03,"Sample creative 03 (static, offer)",static,6274,69,1061.54
+2026-09-20,SAMPLE-04,"Sample creative 04 (video, unboxing)",video,10027,158,2017.31
+2026-09-20,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,6190,83,1144.82
+2026-09-20,SAMPLE-06,"Sample creative 06 (video, founder story)",video,9992,118,1702.21
+2026-09-20,SAMPLE-07,"Sample creative 07 (static, new launch)",static,489,4,83.94
+2026-09-20,SAMPLE-08,"Sample creative 08 (static, before-after)",static,6133,73,997.50
+2026-09-20,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,5785,81,1013.39
+2026-09-21,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,9003,126,1850.58
+2026-09-21,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,9232,144,1811.70
+2026-09-21,SAMPLE-03,"Sample creative 03 (static, offer)",static,8101,79,1686.38
+2026-09-21,SAMPLE-04,"Sample creative 04 (video, unboxing)",video,7816,123,1593.54
+2026-09-21,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,6723,74,941.23
+2026-09-21,SAMPLE-06,"Sample creative 06 (video, founder story)",video,8061,103,1305.46
+2026-09-21,SAMPLE-07,"Sample creative 07 (static, new launch)",static,539,5,97.96
+2026-09-21,SAMPLE-08,"Sample creative 08 (static, before-after)",static,8657,98,1325.42
+2026-09-21,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,5523,83,1096.30
+2026-09-22,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,9105,119,1440.08
+2026-09-22,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,7798,122,1427.17
+2026-09-22,SAMPLE-03,"Sample creative 03 (static, offer)",static,5636,53,863.88
+2026-09-22,SAMPLE-04,"Sample creative 04 (video, unboxing)",video,10347,153,1694.73
+2026-09-22,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,5336,64,792.93
+2026-09-22,SAMPLE-06,"Sample creative 06 (video, founder story)",video,7780,158,1605.89
+2026-09-22,SAMPLE-07,"Sample creative 07 (static, new launch)",static,607,5,93.10
+2026-09-22,SAMPLE-08,"Sample creative 08 (static, before-after)",static,7620,81,1197.68
+2026-09-22,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,7616,107,1422.43
+2026-09-23,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,7537,84,1226.89
+2026-09-23,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,9136,144,1913.01
+2026-09-23,SAMPLE-03,"Sample creative 03 (static, offer)",static,7524,72,1348.77
+2026-09-23,SAMPLE-04,"Sample creative 04 (video, unboxing)",video,10127,137,1615.73
+2026-09-23,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,5527,62,1017.27
+2026-09-23,SAMPLE-06,"Sample creative 06 (video, founder story)",video,9007,160,1388.09
+2026-09-23,SAMPLE-07,"Sample creative 07 (static, new launch)",static,493,4,79.64
+2026-09-23,SAMPLE-08,"Sample creative 08 (static, before-after)",static,8674,90,1622.76
+2026-09-23,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,7792,107,1517.98
+2026-09-24,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,9452,111,1598.96
+2026-09-24,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,6799,107,1211.36
+2026-09-24,SAMPLE-03,"Sample creative 03 (static, offer)",static,8323,90,1709.19
+2026-09-24,SAMPLE-04,"Sample creative 04 (video, unboxing)",video,9117,123,1855.48
+2026-09-24,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,6115,64,1215.25
+2026-09-24,SAMPLE-06,"Sample creative 06 (video, founder story)",video,9773,203,1550.92
+2026-09-24,SAMPLE-07,"Sample creative 07 (static, new launch)",static,560,5,106.16
+2026-09-24,SAMPLE-08,"Sample creative 08 (static, before-after)",static,6094,71,1016.25
+2026-09-24,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,6837,101,1099.77
+2026-09-24,SAMPLE-10,"Sample creative 10 (video, festive)",video,8039,172,1375.83
+2026-09-25,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,7862,87,1370.87
+2026-09-25,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,7455,110,1108.08
+2026-09-25,SAMPLE-03,"Sample creative 03 (static, offer)",static,7214,68,1282.90
+2026-09-25,SAMPLE-04,"Sample creative 04 (video, unboxing)",video,10496,127,1724.82
+2026-09-25,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,6254,65,1180.76
+2026-09-25,SAMPLE-06,"Sample creative 06 (video, founder story)",video,7585,156,1521.14
+2026-09-25,SAMPLE-07,"Sample creative 07 (static, new launch)",static,585,5,101.23
+2026-09-25,SAMPLE-08,"Sample creative 08 (static, before-after)",static,6986,77,1069.56
+2026-09-25,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,5996,80,925.79
+2026-09-25,SAMPLE-10,"Sample creative 10 (video, festive)",video,8936,213,1558.20
+2026-09-26,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,8139,85,1443.95
+2026-09-26,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,8934,143,1292.93
+2026-09-26,SAMPLE-03,"Sample creative 03 (static, offer)",static,8149,81,1344.75
+2026-09-26,SAMPLE-04,"Sample creative 04 (video, unboxing)",video,8147,93,1430.79
+2026-09-26,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,6250,67,1308.59
+2026-09-26,SAMPLE-06,"Sample creative 06 (video, founder story)",video,7571,159,1372.81
+2026-09-26,SAMPLE-07,"Sample creative 07 (static, new launch)",static,605,5,95.96
+2026-09-26,SAMPLE-08,"Sample creative 08 (static, before-after)",static,6175,57,1139.29
+2026-09-26,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,7529,110,1114.88
+2026-09-26,SAMPLE-10,"Sample creative 10 (video, festive)",video,10095,226,1880.95
+2026-09-27,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,10750,113,2022.50
+2026-09-27,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,6807,110,1187.01
+2026-09-27,SAMPLE-03,"Sample creative 03 (static, offer)",static,6877,72,1246.85
+2026-09-27,SAMPLE-04,"Sample creative 04 (video, unboxing)",video,7878,94,1160.64
+2026-09-27,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,5485,52,1085.43
+2026-09-27,SAMPLE-06,"Sample creative 06 (video, founder story)",video,8184,161,1235.60
+2026-09-27,SAMPLE-07,"Sample creative 07 (static, new launch)",static,536,4,93.58
+2026-09-27,SAMPLE-08,"Sample creative 08 (static, before-after)",static,6056,59,893.73
+2026-09-27,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,7052,105,1464.99
+2026-09-27,SAMPLE-10,"Sample creative 10 (video, festive)",video,10130,207,2117.09
+2026-09-28,SAMPLE-01,"Sample creative 01 (video, problem-first hook)",video,10194,104,1707.18
+2026-09-28,SAMPLE-02,"Sample creative 02 (video, testimonial)",video,8084,125,1682.01
+2026-09-28,SAMPLE-03,"Sample creative 03 (static, offer)",static,7730,73,1402.75
+2026-09-28,SAMPLE-04,"Sample creative 04 (video, unboxing)",video,8835,89,1436.23
+2026-09-28,SAMPLE-05,"Sample creative 05 (carousel, bestsellers)",carousel,6082,61,1085.56
+2026-09-28,SAMPLE-06,"Sample creative 06 (video, founder story)",video,8039,152,1526.78
+2026-09-28,SAMPLE-07,"Sample creative 07 (static, new launch)",static,704,5,103.18
+2026-09-28,SAMPLE-08,"Sample creative 08 (static, before-after)",static,8095,80,1591.48
+2026-09-28,SAMPLE-09,"Sample creative 09 (carousel, reviews)",carousel,7085,97,1281.59
+2026-09-28,SAMPLE-10,"Sample creative 10 (video, festive)",video,7289,164,1434.49

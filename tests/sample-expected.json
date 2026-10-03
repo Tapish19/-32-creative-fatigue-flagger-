@@ -1,0 +1,92 @@
+[
+  {
+    "ad_id": "SAMPLE-01",
+    "baseline_ctr": 0.022623110677718185,
+    "current_ctr": 0.011151826646996304,
+    "drop": 0.5070604212717797,
+    "current_impressions": 63039,
+    "delivery_days": 28,
+    "status": "flagged"
+  },
+  {
+    "ad_id": "SAMPLE-02",
+    "baseline_ctr": 0.015595334960672634,
+    "current_ctr": 0.01565084616363405,
+    "drop": -0.003559474875108437,
+    "current_impressions": 55013,
+    "delivery_days": 28,
+    "status": "ok"
+  },
+  {
+    "ad_id": "SAMPLE-03",
+    "baseline_ctr": 0.01226163798570885,
+    "current_ctr": 0.00989252327366723,
+    "drop": 0.19321355880860813,
+    "current_impressions": 51453,
+    "delivery_days": 28,
+    "status": "ok"
+  },
+  {
+    "ad_id": "SAMPLE-04",
+    "baseline_ctr": 0.018557927020091382,
+    "current_ctr": 0.012564090720125641,
+    "drop": 0.3229798400153546,
+    "current_impressions": 64947,
+    "delivery_days": 14,
+    "status": "flagged"
+  },
+  {
+    "ad_id": "SAMPLE-05",
+    "baseline_ctr": 0.017092051812677245,
+    "current_ctr": 0.010597091281151794,
+    "drop": 0.379998879169563,
+    "current_impressions": 41049,
+    "delivery_days": 24,
+    "status": "flagged"
+  },
+  {
+    "ad_id": "SAMPLE-06",
+    "baseline_ctr": 0.02018498813129246,
+    "current_ctr": 0.01983120178118366,
+    "drop": 0.01752720129472518,
+    "current_impressions": 57939,
+    "delivery_days": 28,
+    "status": "ok"
+  },
+  {
+    "ad_id": "SAMPLE-07",
+    "baseline_ctr": 0.014611638041527814,
+    "current_ctr": 0.00806845965770171,
+    "drop": 0.4478059451808005,
+    "current_impressions": 4090,
+    "delivery_days": 28,
+    "status": "not enough volume"
+  },
+  {
+    "ad_id": "SAMPLE-08",
+    "baseline_ctr": 0.017491208366321138,
+    "current_ctr": 0.010362173038229377,
+    "drop": 0.40757820607857664,
+    "current_impressions": 49700,
+    "delivery_days": 28,
+    "status": "flagged"
+  },
+  {
+    "ad_id": "SAMPLE-09",
+    "baseline_ctr": 0.013308933621693561,
+    "current_ctr": 0.01416634940990242,
+    "drop": -0.0644240787865431,
+    "current_impressions": 49907,
+    "delivery_days": 28,
+    "status": "ok"
+  },
+  {
+    "ad_id": "SAMPLE-10",
+    "baseline_ctr": 0.02207287194587426,
+    "current_ctr": 0.02207287194587426,
+    "drop": 0.0,
+    "current_impressions": 44489,
+    "delivery_days": 5,
+    "status": "too new"
+  }
+]
