@@ -15,7 +15,8 @@ export default async function handler(request: Request): Promise<Response> {
     if (body.csv_url) {
       // Deliberate allowlist keeps this small endpoint safe from private-network requests.
       if (body.csv_url !== SAMPLE) throw new Error('URL loading supports the official sample only. Upload other CSV files using csv_text.');
-      const response = await fetch(SAMPLE, { signal: AbortSignal.timeout(10_000), redirect: 'error' });
+      const response = await fetch(SAMPLE, { signal: AbortSignal.timeout(10_000), redirect: 'manual' });
+      if (response.status >= 300 && response.status < 400) throw new Error('CSV download redirects are not allowed.');
       if (!response.ok) throw new Error(`CSV download failed (${response.status}).`);
       const reader = response.body?.getReader();
       if (!reader) throw new Error('Empty download.');
