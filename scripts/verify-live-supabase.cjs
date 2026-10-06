@@ -40,7 +40,7 @@ const { chromium } = require(process.env.PLAYWRIGHT_PATH || 'playwright');
         await page.getByRole('button', { name: 'Sign in', exact: true }).click();
         const assigned = page.locator('.database-page .table-wrap').nth(0);
         await assigned.getByText(login.client_id === 1 ? 'User 1' : 'User 6', { exact: true }).waitFor();
-        assert.equal(await assigned.locator('tbody tr').count(), login.client_id === 1 ? 5 : 3);
+        assert.equal(await assigned.locator('tbody tr').count(), 5);
         assert.equal(await assigned.getByText(login.client_id === 1 ? 'User 6' : 'User 1', { exact: true }).count(), 0);
         const session = await page.evaluate(() => {
           const name = Object.keys(localStorage).find(name => /^sb-.*-auth-token$/.test(name));
@@ -53,7 +53,7 @@ const { chromium } = require(process.env.PLAYWRIGHT_PATH || 'playwright');
         await page.getByRole('link', { name: 'Creative analysis', exact: true }).click();
         await page.getByRole('button', { name: 'Load official sample', exact: true }).click();
         await page.getByRole('status').filter({ hasText: 'Showing 10 of 10 creatives' }).waitFor();
-        await page.getByRole('combobox', { name: /Assigned user/ }).selectOption(`${login.client_id}:4`);
+        await page.getByRole('combobox', { name: /Assigned user/ }).selectOption(`${login.client_id}:${login.client_id === 1 ? 4 : 6}`);
         await page.getByRole('button', { name: 'Save flagged ads', exact: true }).click();
         await page.getByRole('status').filter({ hasText: 'Saved 4 flag records.' }).waitFor();
         await page.getByRole('link', { name: 'Client database', exact: true }).click();

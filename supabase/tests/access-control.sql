@@ -19,7 +19,7 @@ insert into public.creative_flags
   (client_id, user_id, ad_id, creative_name, creative_filter, metric, drop_percent, dropped_on, current_window_start, current_window_end)
 values
   (1, 4, 'client-1-ad', 'Client 1 creative', '{"drop_threshold":0.3}', 'ctr', 50.71, '2026-09-28', '2026-09-22', '2026-09-28'),
-  (2, 4, 'client-2-ad', 'Client 2 creative', '{"cpc_increase_threshold":0.8}', 'cpc', -99.03, '2026-09-28', '2026-09-22', '2026-09-28');
+  (2, 6, 'client-2-ad', 'Client 2 creative', '{"cpc_increase_threshold":0.8}', 'cpc', -99.03, '2026-09-28', '2026-09-22', '2026-09-28');
 
 select pg_temp.assert_true(not has_table_privilege('anon', 'public.app_users', 'select'), 'anonymous user access denied');
 select pg_temp.assert_true(not has_table_privilege('anon', 'public.creative_flags', 'select'), 'anonymous flag access denied');
@@ -56,7 +56,7 @@ do $$
 begin
   begin
     insert into public.creative_flags (client_id, user_id, ad_id, creative_name, creative_filter, metric, drop_percent, dropped_on, current_window_start, current_window_end)
-    values (2, 4, 'forbidden-write', 'Other client', '{}', 'ctr', 40, '2026-09-28', '2026-09-22', '2026-09-28');
+    values (2, 6, 'forbidden-write', 'Other client', '{}', 'ctr', 40, '2026-09-28', '2026-09-22', '2026-09-28');
     raise exception 'Cross-client flag insert accepted';
   exception when insufficient_privilege then null; end;
   begin
@@ -80,10 +80,10 @@ end;
 $$;
 
 select set_config('request.jwt.claim.sub', '00000000-0000-4000-8000-000000000002', true);
-select pg_temp.assert_true((select array_agg(user_id order by user_id) = array[4,5,6]::bigint[] from public.app_users), 'client 2 sees users 4 through 6');
+select pg_temp.assert_true((select array_agg(user_id order by user_id) = array[6,7,8,9,10]::bigint[] from public.app_users), 'client 2 sees users 6 through 10');
 select pg_temp.assert_true((select count(*) = 1 and min(client_id) = 2 from public.clients), 'client 2 sees only its client');
-select pg_temp.assert_true((select count(*) = 3 from public.client_users), 'client 2 sees only its three memberships');
-select pg_temp.assert_true((select count(*) = 1 and min(ad_id) = 'client-2-ad' from public.creative_flags), 'client 2 sees only its flags for shared user 4');
+select pg_temp.assert_true((select count(*) = 5 from public.client_users), 'client 2 sees only its five memberships');
+select pg_temp.assert_true((select count(*) = 1 and min(ad_id) = 'client-2-ad' from public.creative_flags), 'client 2 sees only its flags for user 6');
 select pg_temp.assert_true((select count(*) = 0 from public.creative_flags where client_id = 1), 'client 2 cannot request client 1 flags');
 
 select set_config('request.jwt.claim.sub', '00000000-0000-4000-8000-000000000003', true);

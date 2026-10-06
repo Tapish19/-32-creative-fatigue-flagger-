@@ -1,7 +1,7 @@
 // Browser smoke test with mocked Supabase HTTP responses. RLS is tested in SQL.
 const assert = require('node:assert/strict');
 const { chromium } = require(process.env.PLAYWRIGHT_PATH || 'playwright');
-const users = Array.from({ length: 6 }, (_, index) => ({ user_id: index + 1, display_name: `User ${index + 1}` }));
+const users = Array.from({ length: 10 }, (_, index) => ({ user_id: index + 1, display_name: `User ${index + 1}` }));
 const flags = [];
 const principal = client => ({ id: `00000000-0000-4000-8000-00000000000${client}`, email: `client${client}@example.test`, aud: 'authenticated', role: 'authenticated', app_metadata: {}, user_metadata: {}, created_at: '2026-10-06T00:00:00Z' });
 const jwt = client => [Buffer.from('{"alg":"HS256","typ":"JWT"}').toString('base64url'), Buffer.from(JSON.stringify({ sub: principal(client).id, role: 'authenticated', aud: 'authenticated', exp: Math.floor(Date.now() / 1000) + 3600 })).toString('base64url'), 'test-signature'].join('.');
@@ -28,7 +28,7 @@ const jwt = client => [Buffer.from('{"alg":"HS256","typ":"JWT"}').toString('base
       try { client = Number(JSON.parse(Buffer.from(token.split('.')[1], 'base64url')).sub.slice(-1)); } catch {}
       let data = [];
       if (url.pathname === '/rest/v1/clients') data = client ? [{ client_id: client, client_name: `Client ${client}` }] : [];
-      else if (url.pathname === '/rest/v1/app_users') data = users.filter(user => client === 1 ? user.user_id <= 5 : client === 2 ? user.user_id >= 4 : false);
+      else if (url.pathname === '/rest/v1/app_users') data = users.filter(user => client === 1 ? user.user_id <= 5 : client === 2 ? user.user_id >= 6 : false);
       else if (url.pathname === '/rest/v1/creative_flags') {
         if (request.method() === 'POST') {
           const records = request.postDataJSON();
@@ -67,7 +67,7 @@ const jwt = client => [Buffer.from('{"alg":"HS256","typ":"JWT"}').toString('base
     await page.getByLabel('Password', { exact: true }).fill('mock-password');
     await page.getByRole('button', { name: 'Sign in', exact: true }).click();
     await assigned.getByText('User 6', { exact: true }).waitFor();
-    assert.equal(await assigned.locator('tbody tr').count(), 3);
+    assert.equal(await assigned.locator('tbody tr').count(), 5);
     assert.equal(await assigned.getByText('User 1', { exact: true }).count(), 0);
     await page.getByText('No flags saved yet.', { exact: false }).waitFor();
     assert.equal(await page.locator('.database-page').getByText('50.71%', { exact: true }).count(), 0);

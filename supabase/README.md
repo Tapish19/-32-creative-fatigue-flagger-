@@ -2,7 +2,7 @@
 
 The migration creates four tables. `clients` holds client IDs and their Supabase
 Auth login UUIDs. `app_users` holds numeric user IDs. `client_users` defines the
-overlapping assignments. `creative_flags` stores one observed flag per row,
+separate assignments. `creative_flags` stores one observed flag per row,
 including client/user IDs, ad ID, creative name, filter snapshot, metric, signed
 drop percentage, observation date, seven-day window and recording timestamp.
 
@@ -11,16 +11,16 @@ The seed creates exactly these assignments:
 | Client | Assigned users |
 | --- | --- |
 | 1 | 1, 2, 3, 4, 5 |
-| 2 | 4, 5, 6 |
+| 2 | 6, 7, 8, 9, 10 |
 
-Both clients can see profiles 4 and 5. Each client can only see flag records with
-its own client ID, even for these shared users. A composite foreign key prevents
-storing a client 1 flag against user 6, or a client 2 flag against users 1–3.
+Client 1 sees users 1–5 and Client 2 sees users 6–10. Each client can only see
+flag records with its own client ID. A composite foreign key prevents saving
+flags for a user outside the client's assigned range.
 
 ## Apply to the selected Supabase project
 
 Apply `migrations/20261006000100_client_creative_flags.sql` as a migration, then
-execute `seed.sql`. Alternatively, run them in that order in the Supabase SQL
+execute `seed.sql`, then `migrations/20261006000200_client_user_ranges.sql`. Alternatively, run them in that order in the Supabase SQL
 Editor. Seed inserts preserve existing rows and do not change login assignments.
 The migration deliberately fails if those table names already exist; inspect
 existing tables before applying it to an established project.
@@ -132,7 +132,7 @@ ads being saved. If a CSV mixes owners, save each owner's ads separately.
 ## Verify access policies
 
 `tests/access-control.sql` runs transactional PostgreSQL checks for both clients,
-shared users, denied cross-client access/writes, anonymous access and membership
+separate user ranges, denied cross-client access/writes, anonymous access and membership
 integrity. It requires the migration and seed and rolls back its test fixtures.
 
 Local PostgreSQL 17 validation passed using isolated `auth.users`, `auth.uid()`

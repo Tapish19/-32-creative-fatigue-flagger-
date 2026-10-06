@@ -10,7 +10,7 @@ Upload a CSV or load an HTTPS CSV URL. Browser URL downloads require the source 
 
 ## Client database
 
-Open **Client database** from the page navigation to sign in and view your assigned users and saved flags. Client 1 is assigned users 1–5; client 2 is assigned users 4–6. Users 4 and 5 are shared, but each client's flag history stays separate. The SQL migration, seeds, policies, setup instructions and database tests are in [supabase/README.md](supabase/README.md). Configure `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` using `.env.example`. On the analysis page, select an assigned user and choose **Save flagged ads** to record visible flags with their filter snapshot, signed drop percentage and observation date. Recalculation does not save history automatically.
+Open **Client database** from the page navigation to sign in and view your assigned users and saved flags. Client 1 is assigned users 1–5; client 2 is assigned users 6–10. Each client has its own five users and separate flag history. The SQL migration, seeds, policies, setup instructions and database tests are in [supabase/README.md](supabase/README.md). Configure `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` using `.env.example`. On the analysis page, select an assigned user and choose **Save flagged ads** to record visible flags with their filter snapshot, signed drop percentage and observation date. Recalculation does not save history automatically.
 
 ## Calculation decisions
 
