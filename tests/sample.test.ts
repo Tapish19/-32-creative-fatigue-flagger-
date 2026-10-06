@@ -2,7 +2,7 @@ import csv from '../public/sample-data.csv?raw';
 import expectedText from './sample-expected.json?raw';
 import { expect, it } from 'vitest';
 import { parseCsv } from '../shared/csv';
-import { analyze } from '../shared/fatigue';
+import { analyze, hasCpcIncreaseOver40Percent } from '../shared/fatigue';
 it('matches independently calculated official sample metrics', () => {
   const rows = parseCsv(csv);
   const expected = JSON.parse(expectedText);
@@ -17,4 +17,13 @@ it('matches independently calculated official sample metrics', () => {
     expect(actual.current_impressions).toBe(reference.current_impressions);
     for (const key of ['baseline_ctr', 'current_ctr', 'drop'] as const) expect(actual[key]).toBeCloseTo(reference[key], 12);
   }
+});
+
+it('includes the sample creative with a 99% CPC increase in the cost filter', () => {
+  const result = analyze(parseCsv(csv));
+  expect(result.creatives.filter(hasCpcIncreaseOver40Percent).map(row => row.ad_id).sort()).toEqual(['SAMPLE-01', 'SAMPLE-05', 'SAMPLE-07', 'SAMPLE-08']);
+  const creative = result.creatives.find(row => row.ad_id === 'SAMPLE-01')!;
+  expect(creative.baseline_cpc).toBeCloseTo(7.7261, 4);
+  expect(creative.current_cpc).toBeCloseTo(15.3776, 4);
+  expect(creative.cpc_drop).toBeCloseTo(-0.9903, 4);
 });
