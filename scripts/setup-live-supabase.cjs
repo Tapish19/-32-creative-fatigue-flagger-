@@ -31,6 +31,11 @@ function report(result) {
       const policies = await database.query('select tablename, policyname from pg_policies where schemaname = $1 and tablename = any($2::text[])', ['public', names]);
       const rls = await database.query('select relname, relrowsecurity from pg_class join pg_namespace on pg_class.relnamespace = pg_namespace.oid where nspname = $1 and relname = any($2::text[])', ['public', names]);
       if (rls.rows.length !== 4 || rls.rows.some(row => !row.relrowsecurity) || policies.rows.length !== 5) throw new Error('Expected access policies are missing; setup rolled back.');
+      // Release foreign-key creation locks on auth.users before calling Auth.
+      await database.query("notify pgrst, 'reload schema'");
+      await database.query('commit');
+      await database.query('begin');
+      await database.query('select pg_advisory_xact_lock(20261006)');
       if (process.env.CLIENT_1_EMAIL || process.env.CLIENT_2_EMAIL) {
         stage = 'client-logins';
         for (const id of [1, 2]) {
@@ -46,6 +51,7 @@ function report(result) {
             if (!url || !key) throw new Error('Auth administration configuration is missing.');
             const response = await fetch(`${url}/auth/v1/admin/users${userId ? '/' + userId : ''}`, {
               method: userId ? 'PUT' : 'POST',
+              signal: AbortSignal.timeout(15000),
               headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
               body: JSON.stringify({ email, password, email_confirm: true, user_metadata: { creative_fatigue_test_client: id } }),
             });
