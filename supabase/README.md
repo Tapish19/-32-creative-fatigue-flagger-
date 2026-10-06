@@ -53,6 +53,20 @@ anon key) to the two Vite variables. Explicit `VITE_` settings take precedence.
 Only the public URL and browser-safe key are included in the frontend bundle.
 Redeploy after connecting the integration or changing its environment variables.
 
+For administrative setup, `node scripts/setup-live-supabase.cjs` reads the
+selected project's `POSTGRES_URL` from the environment, applies the migration
+only when all four tables are absent, preserves existing seed rows, and verifies
+row-level security. It trusts the bundled public Supabase root CA and verifies
+the database certificate. It refuses a partial schema or an existing client
+login reassignment. Normal builds do not run this administrative script.
+
+Optional `CLIENT_1_EMAIL` / `CLIENT_2_EMAIL` settings link existing Auth accounts.
+Adding the corresponding `CLIENT_1_PASSWORD` / `CLIENT_2_PASSWORD` creates
+confirmed test accounts through the server-only Auth admin API. Existing
+accounts are only updated if they carry the matching test-client marker.
+Clear these temporary password variables after setup. Never expose them in
+frontend variables or source control.
+
 Open **Client database**, sign in as one of the two provisioned client accounts,
 and view the assigned users and latest 100 saved flags. The browser queries the
 real tables; row-level security enforces the client scope. No demo rows are shown
