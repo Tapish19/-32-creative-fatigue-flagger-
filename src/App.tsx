@@ -1,6 +1,9 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { analyze, type Analysis } from '../shared/fatigue';
 import { parseCsv } from '../shared/csv';
+import ClientDatabase from './ClientDatabase';
+import SaveFlags from './SaveFlags';
+import { useClientDatabase, type ClientDatabaseState } from './lib/supabase';
 const SAMPLE = 'https://api.monastic.media/functions/v1/careers-mcp/challenge/sample-data.csv';
 const fmt = (value: number | null) => value === null ? '—' : `${(value * 100).toFixed(2)}%`;
 const fmtCpc = (value: number | null) => value === null ? '—' : `₹${value.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -21,6 +24,17 @@ function Sparkline({ points }: { points: Analysis['creatives'][number]['daily'] 
   return <svg viewBox="0 0 140 42" width="140" height="42" role="img" aria-label="Daily CTR trend; gaps indicate missing or paused delivery"><path d={path} fill="none" stroke="currentColor" strokeWidth="2" /><title>{points.map(p => `${p.date}: ${fmt(p.ctr)}`).join('\n')}</title></svg>;
 }
 export default function App() {
+  const [page, setPage] = useState(window.location.hash === '#database' ? 'database' : 'analysis');
+  const database = useClientDatabase();
+  useEffect(() => {
+    const update = () => setPage(window.location.hash === '#database' ? 'database' : 'analysis');
+    window.addEventListener('hashchange', update);
+    return () => window.removeEventListener('hashchange', update);
+  }, []);
+  return <><nav className="page-navigation" aria-label="Pages"><a href="#analysis" aria-current={page === 'analysis' ? 'page' : undefined}>Creative analysis</a><a href="#database" aria-current={page === 'database' ? 'page' : undefined}>Client database</a></nav><div hidden={page !== 'analysis'}><AnalysisPage database={database} /></div><div hidden={page !== 'database'}><ClientDatabase database={database} /></div></>;
+}
+
+function AnalysisPage({ database }: { database: ClientDatabaseState }) {
   const [csv, setCsv] = useState(''), [url, setUrl] = useState(SAMPLE), [threshold, setThreshold] = useState('30');
   const [error, setError] = useState(''), [busy, setBusy] = useState(false), [source, setSource] = useState('');
   const [recalculation, setRecalculation] = useState(0);
@@ -88,7 +102,7 @@ export default function App() {
         {(cpcIncreaseOnly || daysOnly || impressionsOnly) && <button className="secondary" onClick={() => { setCpcIncreaseOnly(false); setDaysOnly(false); setImpressionsOnly(false); }}>Clear filters</button>}
         <p role="status">Showing {visibleCreatives.length} of {result.creatives.length} creatives</p>
       </section>
-      <div className="table-wrap"><table><thead><tr><th>Creative</th><th>Delivery days</th><th>Baseline CTR</th><th>Current CTR</th><th>Relative CTR drop</th><th>Baseline CPC</th><th>Current CPC</th><th>CPC change</th><th>Impressions (last 7 days)</th><th>Daily CTR</th><th>Status</th></tr></thead><tbody>{visibleCreatives.map(row => <tr key={row.ad_id}><td><b>{row.creative_name}</b><small>{row.ad_id} · {row.format}</small><p>{row.explanation}</p></td><td>{row.delivery_days}</td><td>{fmt(row.baseline_ctr)}</td><td>{fmt(row.current_ctr)}</td><td>{fmt(row.drop)}</td><td>{fmtCpc(row.baseline_cpc)}</td><td>{fmtCpc(row.current_cpc)}</td><td>{fmtCpcChange(row.cpc_drop)}</td><td>{row.current_impressions.toLocaleString('en-IN')}</td><td><Sparkline points={row.daily} /></td><td><span className={`badge ${row.status.replaceAll(' ', '-')}`}>{row.status}</span></td></tr>)}{visibleCreatives.length === 0 && <tr><td colSpan={11} className="no-results">No creatives match the selected filters. Adjust the minimums or clear filters to see all creatives.</td></tr>}</tbody></table></div></> : <section className="empty"><h2>Start with your creative data</h2><p>Load the official sample or upload your CSV. Results appear here, sorted by relative CTR decline.</p><code>date, ad_id, creative_name, format, impressions, clicks, spend_inr</code></section>}
+      <div className="table-wrap"><table><thead><tr><th>Creative</th><th>Delivery days</th><th>Baseline CTR</th><th>Current CTR</th><th>Relative CTR drop</th><th>Baseline CPC</th><th>Current CPC</th><th>CPC change</th><th>Impressions (last 7 days)</th><th>Daily CTR</th><th>Status</th></tr></thead><tbody>{visibleCreatives.map(row => <tr key={row.ad_id}><td><b>{row.creative_name}</b><small>{row.ad_id} · {row.format}</small><p>{row.explanation}</p></td><td>{row.delivery_days}</td><td>{fmt(row.baseline_ctr)}</td><td>{fmt(row.current_ctr)}</td><td>{fmt(row.drop)}</td><td>{fmtCpc(row.baseline_cpc)}</td><td>{fmtCpc(row.current_cpc)}</td><td>{fmtCpcChange(row.cpc_drop)}</td><td>{row.current_impressions.toLocaleString('en-IN')}</td><td><Sparkline points={row.daily} /></td><td><span className={`badge ${row.status.replaceAll(' ', '-')}`}>{row.status}</span></td></tr>)}{visibleCreatives.length === 0 && <tr><td colSpan={11} className="no-results">No creatives match the selected filters. Adjust the minimums or clear filters to see all creatives.</td></tr>}</tbody></table></div><SaveFlags analysis={result} database={database} filters={{ cpc_increase_threshold: cpcIncreaseOnly ? cpcThresholdValue : undefined, filter_delivery_days: daysOnly, filter_current_impressions: impressionsOnly }} /></> : <section className="empty"><h2>Start with your creative data</h2><p>Load the official sample or upload your CSV. Results appear here, sorted by relative CTR decline.</p><code>date, ad_id, creative_name, format, impressions, clicks, spend_inr</code></section>}
     <footer>CTR uses total clicks ÷ total impressions. CPC uses total spend ÷ total clicks. Paused days are excluded from baseline and delivery age.</footer>
   </main>;
 }

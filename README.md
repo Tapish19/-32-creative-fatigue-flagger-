@@ -1,12 +1,16 @@
 # Creative Fatigue Flagger
 
-Small React + TypeScript implementation of the Monastic Media challenge. No database or account required.
+Small React + TypeScript implementation of the Monastic Media challenge. CSV analysis works without an account. The optional Client database page uses Supabase Auth and PostgreSQL for assigned users and saved creative flag history.
 
 ## Run
 
 Install Node.js 20+ and run `npm install`, then `npm run dev`. Run `npm test` and `npm run build` to verify.
 
 Upload a CSV or load an HTTPS CSV URL. Browser URL downloads require the source to permit CORS; uploading a downloaded file works without CORS. "Load official sample" reads the user-provided official CSV bundled at public/sample-data.csv without an external download. It contains 243 rows and 10 creatives. All sample metrics were independently calculated using Python's csv module and compared with the TypeScript implementation. At the default threshold SAMPLE-01, SAMPLE-08, SAMPLE-05 and SAMPLE-04 flag; SAMPLE-07 has insufficient volume and SAMPLE-10 is too new.
+
+## Client database
+
+Open **Client database** from the page navigation to sign in and view your assigned users and saved flags. Client 1 is assigned users 1–5; client 2 is assigned users 4–6. Users 4 and 5 are shared, but each client's flag history stays separate. The SQL migration, seeds, policies, setup instructions and database tests are in [supabase/README.md](supabase/README.md). Configure `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` using `.env.example`. On the analysis page, select an assigned user and choose **Save flagged ads** to record visible flags with their filter snapshot, signed drop percentage and observation date. Recalculation does not save history automatically.
 
 ## Calculation decisions
 
@@ -32,4 +36,6 @@ Deploy, publish a public repo and record a two-minute walkthrough. No applicatio
 
 ## Verification in this environment
 
-TypeScript checking, the production build, and all 34 Vitest tests passed. Coverage includes the official sample, CSV parsing, API responses, weighted CTR/CPC calculations, combined delivery/CPC filters, inclusive delivery minimums, strict CPC increase filter boundaries, pauses, and zero-click windows. Vitest was run outside the restricted sandbox so its test workers could start. Dependencies were installed from a local offline cache; the CSV reader is a small state machine supporting quoted commas, embedded newlines and escaped quotes because the planned parser library was unavailable.
+TypeScript checking, the production build, and all 37 Vitest tests passed. Coverage includes the official sample, CSV parsing, API responses, weighted CTR/CPC calculations, combined delivery/CPC filters, inclusive delivery minimums, strict CPC increase filter boundaries, pauses, and zero-click windows. Vitest was run outside the restricted sandbox so its test workers could start. Dependencies were installed from a local offline cache; the CSV reader is a small state machine supporting quoted commas, embedded newlines and escaped quotes because the planned parser library was unavailable.
+
+Client access policies and flag membership integrity were also verified against an isolated PostgreSQL 17 database with Supabase Auth role/function stubs. This is local validation; the schema has not yet been applied to a live Supabase project.
