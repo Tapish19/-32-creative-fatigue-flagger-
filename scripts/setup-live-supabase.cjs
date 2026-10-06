@@ -28,6 +28,7 @@ function report(result) {
       if (existing.rows.length !== 0 && existing.rows.length !== names.length) throw new Error('Partial client schema exists; review before applying the migration.');
       if (!existing.rows.length) await database.query(fs.readFileSync(path.join(__dirname, '../supabase/migrations/20261006000100_client_creative_flags.sql'), 'utf8'));
       await database.query(fs.readFileSync(path.join(__dirname, '../supabase/seed.sql'), 'utf8'));
+      await database.query(fs.readFileSync(path.join(__dirname, '../supabase/migrations/20261006000200_client_user_ranges.sql'), 'utf8'));
       const policies = await database.query('select tablename, policyname from pg_policies where schemaname = $1 and tablename = any($2::text[])', ['public', names]);
       const rls = await database.query('select relname, relrowsecurity from pg_class join pg_namespace on pg_class.relnamespace = pg_namespace.oid where nspname = $1 and relname = any($2::text[])', ['public', names]);
       if (rls.rows.length !== 4 || rls.rows.some(row => !row.relrowsecurity) || policies.rows.length !== 5) throw new Error('Expected access policies are missing; setup rolled back.');
