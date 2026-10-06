@@ -10,9 +10,9 @@ const ctr = (rows: Row[]) => sum(rows, 'impressions') ? sum(rows, 'clicks') / su
 const cpc = (rows: Row[]) => sum(rows, 'clicks') ? sum(rows, 'spend_inr') / sum(rows, 'clicks') : null;
 const percent = (value: number) => `${(value * 100).toFixed(2)}%`;
 
-export function hasCpcIncreaseOver40Percent(creative: { cpc_drop: number | null }) {
-  // Exclude the exact 40% boundary despite floating-point rounding.
-  return creative.cpc_drop !== null && -creative.cpc_drop - 0.4 > Number.EPSILON;
+export function hasCpcIncreaseOver80Percent(creative: { cpc_drop: number | null }) {
+  // Exclude the exact 80% boundary despite floating-point rounding.
+  return creative.cpc_drop !== null && -creative.cpc_drop - 0.8 > Number.EPSILON;
 }
 
 export function analyze(rows: Row[], threshold = 0.3) {
