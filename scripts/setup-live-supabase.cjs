@@ -2,12 +2,18 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client } = require('pg');
+const reportOnly = process.argv.includes('--report');
+let stage = 'connect';
+function report(result) {
+  if (reportOnly) fs.writeFileSync(path.join(__dirname, '../public/database-setup-report.json'), JSON.stringify(result));
+}
 
 (async () => {
   const connectionString = process.env.POSTGRES_URL || process.env.POSTGRES_URL_NON_POOLING;
   if (!connectionString) throw new Error('Supply the selected project database connection through the environment.');
   const database = new Client({ connectionString, connectionTimeoutMillis: 15000 });
   await database.connect();
+  stage = 'schema';
   try {
     const names = ['clients', 'app_users', 'client_users', 'creative_flags'];
     await database.query('begin');
@@ -36,6 +42,7 @@ const { Client } = require('pg');
       const assignments = await database.query('select client_id, auth_user_id is not null as login_assigned from public.clients where client_id in (1, 2) order by client_id');
       console.log('Auth account count:', accounts.rows[0].total);
       console.log('Client login assignments:', JSON.stringify(assignments.rows));
+      report({ ready: true, authAccounts: accounts.rows[0].total, assignments: assignments.rows });
     } catch (error) {
       await database.query('rollback');
       throw error;
@@ -44,5 +51,6 @@ const { Client } = require('pg');
 })().catch(error => {
   // Connection errors can contain host/user details, so keep this output limited.
   console.error('Setup did not complete.', error.code || 'Review connection and schema before retrying.');
-  process.exitCode = 1;
+  report({ ready: false, stage, code: error.code || 'SETUP_FAILED' });
+  process.exitCode = reportOnly ? 0 : 1;
 });
