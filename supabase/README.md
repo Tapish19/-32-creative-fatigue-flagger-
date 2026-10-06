@@ -47,6 +47,12 @@ Supabase project URL and browser-safe publishable key. Restart the Vite dev
 server. For Vercel, add the same two environment variables and rebuild/deploy.
 Never use a Supabase secret/service-role key in a `VITE_` variable.
 
+Vercel's Supabase integration is also supported directly: the build maps its
+`NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (or public
+anon key) to the two Vite variables. Explicit `VITE_` settings take precedence.
+Only the public URL and browser-safe key are included in the frontend bundle.
+Redeploy after connecting the integration or changing its environment variables.
+
 Open **Client database**, sign in as one of the two provisioned client accounts,
 and view the assigned users and latest 100 saved flags. The browser queries the
 real tables; row-level security enforces the client scope. No demo rows are shown
