@@ -5,9 +5,15 @@ export interface Row {
 export type Status = 'flagged' | 'ok' | 'too new' | 'not enough volume';
 const DAY = 86_400_000;
 const iso = (time: number) => new Date(time).toISOString().slice(0, 10);
-const sum = (rows: Row[], key: 'clicks' | 'impressions') => rows.reduce((n, row) => n + row[key], 0);
+const sum = (rows: Row[], key: 'clicks' | 'impressions' | 'spend_inr') => rows.reduce((n, row) => n + row[key], 0);
 const ctr = (rows: Row[]) => sum(rows, 'impressions') ? sum(rows, 'clicks') / sum(rows, 'impressions') : null;
+const cpc = (rows: Row[]) => sum(rows, 'clicks') ? sum(rows, 'spend_inr') / sum(rows, 'clicks') : null;
 const percent = (value: number) => `${(value * 100).toFixed(2)}%`;
+
+export function hasCpcDropOver40Percent(creative: { cpc_drop: number | null }) {
+  // Exclude the exact 40% boundary despite floating-point rounding.
+  return creative.cpc_drop !== null && creative.cpc_drop - 0.4 > Number.EPSILON;
+}
 
 export function analyze(rows: Row[], threshold = 0.3) {
   if (!rows.length) throw new Error('CSV contains no data rows.');
@@ -22,9 +28,13 @@ export function analyze(rows: Row[], threshold = 0.3) {
     const sorted = [...unsorted].sort((a, b) => a.date.localeCompare(b.date));
     const active = sorted.filter(row => row.impressions > 0);
     const current = sorted.filter(row => row.date >= start && row.date <= end);
-    const baseline_ctr = ctr(active.slice(0, 7));
+    const baseline = active.slice(0, 7);
+    const baseline_ctr = ctr(baseline);
     const current_ctr = ctr(current);
     const drop = baseline_ctr !== null && baseline_ctr > 0 && current_ctr !== null ? 1 - current_ctr / baseline_ctr : null;
+    const baseline_cpc = cpc(baseline);
+    const current_cpc = cpc(current);
+    const cpc_drop = baseline_cpc !== null && baseline_cpc > 0 && current_cpc !== null ? 1 - current_cpc / baseline_cpc : null;
     const current_impressions = sum(current, 'impressions');
     let status: Status = 'ok';
     let explanation = 'Current CTR is within the selected threshold.';
@@ -43,7 +53,7 @@ export function analyze(rows: Row[], threshold = 0.3) {
       daily.push({ date, ctr: row && row.impressions > 0 ? row.clicks / row.impressions : null });
     }
     const latest = sorted[sorted.length - 1];
-    return { ad_id, creative_name: latest.creative_name, format: latest.format, delivery_days: active.length, baseline_ctr, current_ctr, drop, current_impressions, status, explanation, daily };
+    return { ad_id, creative_name: latest.creative_name, format: latest.format, delivery_days: active.length, baseline_ctr, current_ctr, drop, baseline_cpc, current_cpc, cpc_drop, current_impressions, status, explanation, daily };
   }).sort((a, b) => (b.drop ?? -Infinity) - (a.drop ?? -Infinity) || a.ad_id.localeCompare(b.ad_id));
   return { current_window: { start, end }, drop_threshold: threshold, creatives, flagged_creatives: creatives.filter(row => row.status === 'flagged') };
 }

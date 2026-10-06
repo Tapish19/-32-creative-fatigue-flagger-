@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { analyze, type Row } from '../shared/fatigue';
+import { analyze, hasCpcDropOver40Percent, type Row } from '../shared/fatigue';
 const rows = (count = 28, id = 'a'): Row[] => Array.from({ length: count }, (_, i) => ({ date: `2026-09-${String(i + 1).padStart(2, '0')}`, ad_id: id, creative_name: id, format: 'video', impressions: 1000, clicks: i < 7 ? 20 : 14, spend_inr: 100 }));
 describe('fatigue calculations', () => {
   it('flags exact 30% decline with weighted window CTR', () => {
@@ -44,5 +44,56 @@ describe('fatigue calculations', () => {
     expect(analyze(rows(), 0.4).flagged_creatives).toHaveLength(0);
     expect(analyze(rows().reverse())).toEqual(analyze(rows()));
     expect(() => analyze(rows(), NaN)).toThrow(); expect(() => analyze([], 0.3)).toThrow();
+  });
+});
+
+describe('cost per click filter', () => {
+  it('uses total spend divided by total clicks in the same baseline and current windows', () => {
+    const data = rows();
+    data[0].clicks = 10; data[0].spend_inr = 200;
+    data[21].clicks = 7; data[21].spend_inr = 50;
+    const result = analyze(data).creatives[0];
+    expect(result.baseline_cpc).toBeCloseTo(800 / 130);
+    expect(result.current_cpc).toBeCloseTo(650 / 91);
+    expect(result.cpc_drop).toBeCloseTo(1 - (650 / 91) / (800 / 130));
+  });
+
+  it('shows only drops strictly greater than 40%, including a 100% drop', () => {
+    const data = [60, 59.999, 61, 100, 120, 0].flatMap(spend => {
+      const creativeRows = rows(28, `spend-${spend}`);
+      creativeRows.forEach(row => row.clicks = 20);
+      creativeRows.slice(21).forEach(row => row.spend_inr = spend);
+      return creativeRows;
+    });
+    const result = analyze(data);
+    expect(result.creatives.filter(hasCpcDropOver40Percent).map(row => row.ad_id).sort()).toEqual(['spend-0', 'spend-59.999']);
+    expect(result.creatives.find(row => row.ad_id === 'spend-60')!.cpc_drop).toBeCloseTo(0.4);
+    expect(result.flagged_creatives).toHaveLength(0);
+  });
+
+  it('does not calculate a relative drop from zero baseline CPC or no clicks', () => {
+    const data = rows();
+    data.slice(0, 7).forEach(row => row.spend_inr = 0);
+    let result = analyze(data).creatives[0];
+    expect(result.baseline_cpc).toBe(0); expect(result.cpc_drop).toBeNull();
+    expect(hasCpcDropOver40Percent(result)).toBe(false);
+    data.slice(0, 7).forEach(row => { row.spend_inr = 100; row.clicks = 0; });
+    result = analyze(data).creatives[0];
+    expect(result.baseline_cpc).toBeNull(); expect(result.cpc_drop).toBeNull();
+    expect(hasCpcDropOver40Percent(result)).toBe(false);
+    data.slice(0, 7).forEach(row => row.clicks = 20);
+    data.slice(21).forEach(row => row.clicks = 0);
+    result = analyze(data).creatives[0];
+    expect(result.current_cpc).toBeNull(); expect(result.cpc_drop).toBeNull();
+    expect(hasCpcDropOver40Percent(result)).toBe(false);
+  });
+
+  it('preserves pauses and the file-wide current window for CPC', () => {
+    const data = rows();
+    data[0].impressions = 0; data[0].clicks = 0; data[0].spend_inr = 0;
+    expect(analyze(data).creatives[0].baseline_cpc).toBeCloseTo(700 / 134);
+    const stopped = analyze([...rows(14, 'stopped'), ...rows(28, 'active')]).creatives.find(row => row.ad_id === 'stopped')!;
+    expect(stopped.current_cpc).toBeNull(); expect(stopped.cpc_drop).toBeNull();
+    expect(hasCpcDropOver40Percent(stopped)).toBe(false);
   });
 });

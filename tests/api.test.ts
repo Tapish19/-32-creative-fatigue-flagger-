@@ -20,7 +20,11 @@ it('rejects redirects without fetching their destination', async () => {
   expect((await response.json()).error).toBe('CSV download redirects are not allowed.');
   expect(fetchMock).toHaveBeenCalledTimes(1);
 });
-it('analyzes uploaded CSV', async () => { const response = await handler(request({ csv_text: csv })); expect(response.status).toBe(200); expect((await response.json()).creatives[0].status).toBe('too new'); });
+it('analyzes uploaded CSV with CPC metrics', async () => {
+  const response = await handler(request({ csv_text: csv }));
+  expect(response.status).toBe(200);
+  expect((await response.json()).creatives[0]).toMatchObject({ status: 'too new', baseline_cpc: 0.5, current_cpc: 0.5, cpc_drop: 0 });
+});
 it('rejects invalid input and non-allowlisted URLs', async () => {
   for (const body of [{}, { csv_text: csv, csv_url: 'https://example.com' }, { csv_url: 'https://127.0.0.1' }, { csv_text: csv, drop_threshold: '30' }]) expect((await handler(request(body))).status).toBe(400);
 });
