@@ -53,7 +53,7 @@ export default function App() {
     {error && <p className="error" role="alert">{error}</p>}
     {result ? <><section className="summary"><div><strong>{result.creatives.length}</strong><span>creatives analyzed</span></div><div><strong>{result.flagged_creatives.length}</strong><span>need attention</span></div><div><strong>{result.current_window.start} → {result.current_window.end}</strong><span>current seven-day window</span></div></section><p className="source">Source: {source}</p>
       <section className="results-filters" aria-label="Filter results">
-        <label className="checkbox-label"><input type="checkbox" checked={cpcIncreaseOnly} onChange={e => setCpcIncreaseOnly(e.target.checked)} />CPC increased more than 40%</label>
+        <label className="checkbox-label"><input type="checkbox" checked={cpcIncreaseOnly} onChange={e => setCpcIncreaseOnly(e.target.checked)} />CPC increased more than 80%</label>
         <small>Compare CPC in the current seven-day window with the first seven delivery days. Positive CPC changes mean higher costs per click. Windows with no clicks have no CPC.</small>
         <p role="status">Showing {visibleCreatives.length} of {result.creatives.length} creatives</p>
       </section>
