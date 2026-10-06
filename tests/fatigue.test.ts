@@ -48,6 +48,38 @@ describe('fatigue calculations', () => {
 });
 
 describe('delivery filters', () => {
+  it('recalculates eligibility and explanations with selected minimums', () => {
+    const data = rows(13);
+    expect(analyze(data).creatives[0].status).toBe('too new');
+    const lowered = analyze(data, 0.2, { minimum_delivery_days: 13, minimum_current_impressions: 7000 });
+    expect(lowered.creatives[0].status).toBe('flagged');
+    expect(lowered.flagged_creatives).toHaveLength(1);
+    const raised = analyze(data, 0.2, { minimum_delivery_days: 13, minimum_current_impressions: 7001 });
+    expect(raised.creatives[0].status).toBe('not enough volume');
+    expect(raised.creatives[0].explanation).toContain('7,001 are required');
+    expect(raised.flagged_creatives).toHaveLength(0);
+    const tooNew = analyze(data, 0.2, { minimum_delivery_days: 15, minimum_current_impressions: 7001 });
+    expect(tooNew.creatives[0].status).toBe('too new');
+    expect(tooNew.creatives[0].explanation).toContain('15 are required');
+  });
+
+  it('recalculates and combines filters without shrinking the source windows', () => {
+    const data = [...rows(14, 'stopped'), ...rows(28, 'active')];
+    const original = analyze(data);
+    const result = analyze(data, 0.3, { minimum_delivery_days: 14, minimum_current_impressions: 7000, filter_delivery_days: true, filter_current_impressions: true, cpc_increase_threshold: 0.4 });
+    expect(result.filtered_creatives.map(row => row.ad_id)).toEqual(['active']);
+    expect(result.current_window).toEqual(original.current_window);
+    expect(result.creatives.find(row => row.ad_id === 'active')!.baseline_ctr).toBe(original.creatives.find(row => row.ad_id === 'active')!.baseline_ctr);
+    expect(analyze(data, 0.3, { cpc_increase_threshold: 0.8 }).filtered_creatives).toHaveLength(0);
+    expect(analyze(data).filtered_creatives).toHaveLength(2);
+  });
+
+  it('rejects invalid minimums and CPC thresholds during recalculation', () => {
+    expect(() => analyze(rows(), 0.3, { minimum_delivery_days: -1 })).toThrow('whole numbers');
+    expect(() => analyze(rows(), 0.3, { minimum_current_impressions: 0.5 })).toThrow('whole numbers');
+    expect(() => analyze(rows(), 0.3, { cpc_increase_threshold: NaN })).toThrow('CPC increase threshold');
+  });
+
   it('includes exact minimums and requires both enabled criteria', () => {
     const creative = { delivery_days: 14, current_impressions: 5000 };
     expect(meetsDeliveryFilters(creative, 14, 5000)).toBe(true);

@@ -23,9 +23,21 @@ export function meetsDeliveryFilters(creative: { delivery_days: number; current_
   return creative.delivery_days >= minimumDays && creative.current_impressions >= minimumImpressions;
 }
 
-export function analyze(rows: Row[], threshold = 0.3) {
+export interface AnalysisOptions {
+  minimum_delivery_days?: number;
+  minimum_current_impressions?: number;
+  cpc_increase_threshold?: number;
+  filter_delivery_days?: boolean;
+  filter_current_impressions?: boolean;
+}
+
+export function analyze(rows: Row[], threshold = 0.3, options: AnalysisOptions = {}) {
   if (!rows.length) throw new Error('CSV contains no data rows.');
   if (!Number.isFinite(threshold) || threshold < 0 || threshold > 1) throw new Error('Threshold must be between 0 and 1.');
+  const minimumDays = options.minimum_delivery_days ?? 14;
+  const minimumImpressions = options.minimum_current_impressions ?? 5000;
+  meetsDeliveryFilters({ delivery_days: 0, current_impressions: 0 }, minimumDays, minimumImpressions);
+  if (options.cpc_increase_threshold !== undefined) hasCpcIncreaseAbove({ cpc_drop: null }, options.cpc_increase_threshold);
   const dates = rows.map(row => row.date).sort();
   const end = dates[dates.length - 1];
   const start = iso(Date.parse(end) - 6 * DAY);
@@ -46,8 +58,8 @@ export function analyze(rows: Row[], threshold = 0.3) {
     const current_impressions = sum(current, 'impressions');
     let status: Status = 'ok';
     let explanation = 'Current CTR is within the selected threshold.';
-    if (active.length < 14) { status = 'too new'; explanation = `Only ${active.length} delivery days; at least 14 are required.`; }
-    else if (current_impressions < 5000) { status = 'not enough volume'; explanation = `Only ${current_impressions.toLocaleString('en-IN')} impressions in the last seven days; at least 5,000 are required.`; }
+    if (active.length < minimumDays) { status = 'too new'; explanation = `Only ${active.length} delivery days; at least ${minimumDays} are required.`; }
+    else if (current_impressions < minimumImpressions) { status = 'not enough volume'; explanation = `Only ${current_impressions.toLocaleString('en-IN')} impressions in the last seven days; at least ${minimumImpressions.toLocaleString('en-IN')} are required.`; }
     else if (drop === null) explanation = 'No positive baseline CTR; relative decline cannot be calculated.';
     // Tiny tolerance prevents an exact boundary being missed by floating-point arithmetic.
     else if (drop + Number.EPSILON >= threshold) {
@@ -63,6 +75,9 @@ export function analyze(rows: Row[], threshold = 0.3) {
     const latest = sorted[sorted.length - 1];
     return { ad_id, creative_name: latest.creative_name, format: latest.format, delivery_days: active.length, baseline_ctr, current_ctr, drop, baseline_cpc, current_cpc, cpc_drop, current_impressions, status, explanation, daily };
   }).sort((a, b) => (b.drop ?? -Infinity) - (a.drop ?? -Infinity) || a.ad_id.localeCompare(b.ad_id));
-  return { current_window: { start, end }, drop_threshold: threshold, creatives, flagged_creatives: creatives.filter(row => row.status === 'flagged') };
+  const filtered_creatives = creatives.filter(row =>
+    meetsDeliveryFilters(row, options.filter_delivery_days ? minimumDays : 0, options.filter_current_impressions ? minimumImpressions : 0)
+    && (options.cpc_increase_threshold === undefined || hasCpcIncreaseAbove(row, options.cpc_increase_threshold)));
+  return { current_window: { start, end }, drop_threshold: threshold, minimum_delivery_days: minimumDays, minimum_current_impressions: minimumImpressions, creatives, flagged_creatives: creatives.filter(row => row.status === 'flagged'), filtered_creatives };
 }
 export type Analysis = ReturnType<typeof analyze>;

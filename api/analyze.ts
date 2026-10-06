@@ -30,7 +30,19 @@ export default async function handler(request: Request): Promise<Response> {
       text += decoder.decode();
     }
     if (body.drop_threshold !== undefined && typeof body.drop_threshold !== 'number') throw new Error('drop_threshold must be numeric.');
-    return Response.json(analyze(parseCsv(text), body.drop_threshold));
+    for (const key of ['minimum_delivery_days', 'minimum_current_impressions', 'cpc_increase_threshold']) {
+      if (body[key] !== undefined && typeof body[key] !== 'number') throw new Error(`${key} must be numeric.`);
+    }
+    for (const key of ['filter_delivery_days', 'filter_current_impressions']) {
+      if (body[key] !== undefined && typeof body[key] !== 'boolean') throw new Error(`${key} must be boolean.`);
+    }
+    return Response.json(analyze(parseCsv(text), body.drop_threshold, {
+      minimum_delivery_days: body.minimum_delivery_days,
+      minimum_current_impressions: body.minimum_current_impressions,
+      cpc_increase_threshold: body.cpc_increase_threshold,
+      filter_delivery_days: body.filter_delivery_days,
+      filter_current_impressions: body.filter_current_impressions,
+    }));
   } catch (error) {
     return Response.json({ error: error instanceof Error ? error.message : 'Invalid request.' }, { status: 400 });
   }

@@ -29,3 +29,20 @@ it('rejects invalid input and non-allowlisted URLs', async () => {
   for (const body of [{}, { csv_text: csv, csv_url: 'https://example.com' }, { csv_url: 'https://127.0.0.1' }, { csv_text: csv, drop_threshold: '30' }]) expect((await handler(request(body))).status).toBe(400);
 });
 it('rejects other HTTP methods', async () => expect((await handler(new Request('https://example.test'))).status).toBe(405));
+
+it('recalculates uploaded CSV with configurable eligibility and filters', async () => {
+  const response = await handler(request({ csv_text: csv, drop_threshold: 0, minimum_delivery_days: 1, minimum_current_impressions: 1000, filter_delivery_days: true, filter_current_impressions: true }));
+  expect(response.status).toBe(200);
+  const result = await response.json();
+  expect(result.creatives[0].status).toBe('flagged');
+  expect(result.flagged_creatives).toHaveLength(1);
+  expect(result.filtered_creatives).toHaveLength(1);
+  const filtered = await handler(request({ csv_text: csv, cpc_increase_threshold: 0.8 }));
+  expect((await filtered.json()).filtered_creatives).toHaveLength(0);
+});
+
+it('rejects invalid recalculation settings', async () => {
+  for (const settings of [{ minimum_delivery_days: -1 }, { minimum_current_impressions: 0.5 }, { minimum_delivery_days: '14' }, { minimum_current_impressions: null }, { cpc_increase_threshold: -0.1 }, { filter_delivery_days: 'true' }]) {
+    expect((await handler(request({ csv_text: csv, ...settings }))).status).toBe(400);
+  }
+});

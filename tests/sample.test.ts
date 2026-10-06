@@ -39,3 +39,17 @@ it('combines delivery and recent impression filters with the CPC filter', () => 
   expect(deliveryFiltered.filter(row => hasCpcIncreaseAbove(row)).map(row => row.ad_id)).toEqual(['SAMPLE-01']);
   expect(result.creatives.filter(row => meetsDeliveryFilters(row, 0, 0))).toHaveLength(10);
 });
+
+it('recalculates the sample when CTR, CPC, days or impression filters change', () => {
+  const rows = parseCsv(csv);
+  const lowered = analyze(rows, 0.3, { minimum_delivery_days: 5, minimum_current_impressions: 4000 });
+  expect(lowered.creatives.find(row => row.ad_id === 'SAMPLE-07')!.status).toBe('flagged');
+  expect(lowered.creatives.find(row => row.ad_id === 'SAMPLE-10')!.status).toBe('ok');
+  expect(lowered.flagged_creatives).toHaveLength(5);
+  const cpc = analyze(rows, 0.3, { minimum_current_impressions: 4000, cpc_increase_threshold: 0.8 });
+  expect(cpc.filtered_creatives.map(row => row.ad_id)).toEqual(['SAMPLE-01', 'SAMPLE-07']);
+  expect(cpc.filtered_creatives.filter(row => row.status === 'flagged')).toHaveLength(2);
+  const filtered = analyze(rows, 0.5, { minimum_delivery_days: 25, minimum_current_impressions: 50000, filter_delivery_days: true, filter_current_impressions: true, cpc_increase_threshold: 0.4 });
+  expect(filtered.filtered_creatives.map(row => row.ad_id)).toEqual(['SAMPLE-01']);
+  expect(filtered.flagged_creatives.map(row => row.ad_id)).toEqual(['SAMPLE-01']);
+});
