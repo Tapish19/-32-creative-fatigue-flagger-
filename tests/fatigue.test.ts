@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { analyze, hasCpcIncreaseAbove, type Row } from '../shared/fatigue';
+import { analyze, hasCpcIncreaseAbove, meetsDeliveryFilters, type Row } from '../shared/fatigue';
 const rows = (count = 28, id = 'a'): Row[] => Array.from({ length: count }, (_, i) => ({ date: `2026-09-${String(i + 1).padStart(2, '0')}`, ad_id: id, creative_name: id, format: 'video', impressions: 1000, clicks: i < 7 ? 20 : 14, spend_inr: 100 }));
 describe('fatigue calculations', () => {
   it('flags exact 30% decline with weighted window CTR', () => {
@@ -44,6 +44,39 @@ describe('fatigue calculations', () => {
     expect(analyze(rows(), 0.4).flagged_creatives).toHaveLength(0);
     expect(analyze(rows().reverse())).toEqual(analyze(rows()));
     expect(() => analyze(rows(), NaN)).toThrow(); expect(() => analyze([], 0.3)).toThrow();
+  });
+});
+
+describe('delivery filters', () => {
+  it('includes exact minimums and requires both enabled criteria', () => {
+    const creative = { delivery_days: 14, current_impressions: 5000 };
+    expect(meetsDeliveryFilters(creative, 14, 5000)).toBe(true);
+    expect(meetsDeliveryFilters(creative, 15, 5000)).toBe(false);
+    expect(meetsDeliveryFilters(creative, 14, 5001)).toBe(false);
+    expect(meetsDeliveryFilters(creative, 15, 0)).toBe(false);
+    expect(meetsDeliveryFilters(creative, 0, 5001)).toBe(false);
+    expect(meetsDeliveryFilters({ delivery_days: 0, current_impressions: 0 })).toBe(true);
+  });
+
+  it('uses delivery days excluding pauses and impressions from the global seven-day window', () => {
+    const paused = rows(14, 'paused');
+    paused[0].impressions = 0; paused[0].clicks = 0;
+    const creative = analyze(paused).creatives[0];
+    expect(creative.delivery_days).toBe(13);
+    expect(meetsDeliveryFilters(creative, 14, 0)).toBe(false);
+    expect(meetsDeliveryFilters(creative, 13, 7000)).toBe(true);
+    expect(creative.status).toBe('too new');
+    const stopped = analyze([...rows(14, 'stopped'), ...rows(28, 'active')]).creatives.find(row => row.ad_id === 'stopped')!;
+    expect(meetsDeliveryFilters(stopped, 14, 1)).toBe(false);
+    expect(meetsDeliveryFilters(stopped, 14, 0)).toBe(true);
+  });
+
+  it('rejects fractional, negative, non-finite and unsafe minimums', () => {
+    const creative = { delivery_days: 14, current_impressions: 5000 };
+    for (const minimum of [-1, 0.5, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1]) {
+      expect(() => meetsDeliveryFilters(creative, minimum, 0)).toThrow('whole numbers');
+      expect(() => meetsDeliveryFilters(creative, 0, minimum)).toThrow('whole numbers');
+    }
   });
 });
 

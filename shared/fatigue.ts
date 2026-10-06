@@ -16,6 +16,13 @@ export function hasCpcIncreaseAbove(creative: { cpc_drop: number | null }, thres
   return creative.cpc_drop !== null && -creative.cpc_drop - threshold > Number.EPSILON * Math.max(1, threshold);
 }
 
+export function meetsDeliveryFilters(creative: { delivery_days: number; current_impressions: number }, minimumDays = 0, minimumImpressions = 0) {
+  if (![minimumDays, minimumImpressions].every(value => Number.isSafeInteger(value) && value >= 0)) {
+    throw new Error('Delivery filter minimums must be non-negative whole numbers.');
+  }
+  return creative.delivery_days >= minimumDays && creative.current_impressions >= minimumImpressions;
+}
+
 export function analyze(rows: Row[], threshold = 0.3) {
   if (!rows.length) throw new Error('CSV contains no data rows.');
   if (!Number.isFinite(threshold) || threshold < 0 || threshold > 1) throw new Error('Threshold must be between 0 and 1.');

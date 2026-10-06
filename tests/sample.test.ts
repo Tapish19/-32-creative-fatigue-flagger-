@@ -2,7 +2,7 @@ import csv from '../public/sample-data.csv?raw';
 import expectedText from './sample-expected.json?raw';
 import { expect, it } from 'vitest';
 import { parseCsv } from '../shared/csv';
-import { analyze, hasCpcIncreaseAbove } from '../shared/fatigue';
+import { analyze, hasCpcIncreaseAbove, meetsDeliveryFilters } from '../shared/fatigue';
 it('matches independently calculated official sample metrics', () => {
   const rows = parseCsv(csv);
   const expected = JSON.parse(expectedText);
@@ -28,4 +28,14 @@ it('includes the sample creative with a 99% CPC increase in the cost filter', ()
   expect(creative.baseline_cpc).toBeCloseTo(7.7261, 4);
   expect(creative.current_cpc).toBeCloseTo(15.3776, 4);
   expect(creative.cpc_drop).toBeCloseTo(-0.9903, 4);
+});
+
+it('combines delivery and recent impression filters with the CPC filter', () => {
+  const result = analyze(parseCsv(csv));
+  const deliveryFiltered = result.creatives.filter(row => meetsDeliveryFilters(row, 14, 5000));
+  expect(deliveryFiltered).toHaveLength(8);
+  expect(deliveryFiltered.map(row => row.ad_id)).not.toContain('SAMPLE-07');
+  expect(deliveryFiltered.map(row => row.ad_id)).not.toContain('SAMPLE-10');
+  expect(deliveryFiltered.filter(row => hasCpcIncreaseAbove(row)).map(row => row.ad_id)).toEqual(['SAMPLE-01']);
+  expect(result.creatives.filter(row => meetsDeliveryFilters(row, 0, 0))).toHaveLength(10);
 });
