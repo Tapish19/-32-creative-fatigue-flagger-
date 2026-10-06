@@ -11,7 +11,12 @@ function report(result) {
 (async () => {
   const connectionString = process.env.POSTGRES_URL || process.env.POSTGRES_URL_NON_POOLING;
   if (!connectionString) throw new Error('Supply the selected project database connection through the environment.');
-  const database = new Client({ connectionString, connectionTimeoutMillis: 15000 });
+  const parsed = new URL(connectionString);
+  for (const parameter of ['sslmode', 'sslcert', 'sslkey', 'sslrootcert']) parsed.searchParams.delete(parameter);
+  const database = new Client({
+    connectionString: parsed.toString(), connectionTimeoutMillis: 15000,
+    ssl: { rejectUnauthorized: true, ca: fs.readFileSync(path.join(__dirname, '../supabase/prod-ca-2021.crt'), 'utf8') },
+  });
   await database.connect();
   stage = 'schema';
   try {
@@ -27,12 +32,30 @@ function report(result) {
       const rls = await database.query('select relname, relrowsecurity from pg_class join pg_namespace on pg_class.relnamespace = pg_namespace.oid where nspname = $1 and relname = any($2::text[])', ['public', names]);
       if (rls.rows.length !== 4 || rls.rows.some(row => !row.relrowsecurity) || policies.rows.length !== 5) throw new Error('Expected access policies are missing; setup rolled back.');
       if (process.env.CLIENT_1_EMAIL || process.env.CLIENT_2_EMAIL) {
+        stage = 'client-logins';
         for (const id of [1, 2]) {
           const email = process.env[`CLIENT_${id}_EMAIL`];
           if (!email) continue;
-          const user = await database.query('select id from auth.users where lower(email) = lower($1)', [email]);
-          if (user.rows.length !== 1) throw new Error(`Client ${id} needs exactly one existing Auth account.`);
-          await database.query('update public.clients set auth_user_id = $1 where client_id = $2', [user.rows[0].id, id]);
+          const user = await database.query('select id, raw_user_meta_data from auth.users where lower(email) = lower($1)', [email]);
+          let userId = user.rows[0]?.id;
+          const password = process.env[`CLIENT_${id}_PASSWORD`];
+          if (password) {
+            if (userId && user.rows[0].raw_user_meta_data?.creative_fatigue_test_client !== id) throw new Error('An existing account cannot be replaced by test setup.');
+            const url = process.env.SUPABASE_URL;
+            const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+            if (!url || !key) throw new Error('Auth administration configuration is missing.');
+            const response = await fetch(`${url}/auth/v1/admin/users${userId ? '/' + userId : ''}`, {
+              method: userId ? 'PUT' : 'POST',
+              headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, password, email_confirm: true, user_metadata: { creative_fatigue_test_client: id } }),
+            });
+            const account = await response.json();
+            if (!response.ok || !account.id) { const error = new Error('Test login creation failed.'); error.code = 'AUTH_SETUP_' + response.status; throw error; }
+            userId = account.id;
+          }
+          if (!userId) throw new Error(`Client ${id} needs an existing Auth account.`);
+          const assignment = await database.query('update public.clients set auth_user_id = $1 where client_id = $2 and (auth_user_id is null or auth_user_id = $1) returning client_id', [userId, id]);
+          if (assignment.rowCount !== 1) throw new Error('A client already has a different login assignment.');
         }
       }
       await database.query("notify pgrst, 'reload schema'");
